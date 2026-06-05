@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: insightforge-ai
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false          # You will paste this in the Render dashboard
+      - key: DATA_DIR
+        value: /data
+      - key: USER_AGENT
+        value: insightforge-ai/1.0
+    disk:
+      name: insightforge-data
+      mountPath: /data
+      sizeGB: 1              # Free tier: 1 GB persistent disk
